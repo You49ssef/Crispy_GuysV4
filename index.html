@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crispy Guys!! - Commander</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js" onerror="console.error('Erreur chargement Supabase CDN')"></script>
-<script src="supabase-config.js"></script>
 <style>
   :root {
     --orange: #F7621E;
@@ -103,6 +101,7 @@ font-weight: 700; font-size: 3rem; color: var(--white); text-shadow: 3px 4px 0 r
     background: rgba(0,0,0,0.18); border-radius: 50px;
     padding: 5px 14px; margin-top: 10px; color: #fff; font-size: 0.85rem; font-weight: 700;
   }
+  
   .live-dot {
     width: 9px; height: 9px; background: #4ade80; border-radius: 50%;
     box-shadow: 0 0 0 0 rgba(74,222,128,0.6); animation: pulse-dot 1.4s infinite;
@@ -1127,5 +1126,10 @@ font-weight: 700; font-size: 1.3rem; cursor: pointer;
   
   initializeApp();
 </script>
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+  window.supabase = { createClient };
+</script>
+<script src="supabase-config.js"></script>
 </body>
 </html>
