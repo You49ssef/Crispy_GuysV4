@@ -5,8 +5,21 @@ const SUPABASE_CONFIG = {
   storageBucket: 'product-images'
 };
 
-// Initialisation immédiate du client Supabase
-var supabase = window.supabase.createClient(
-  SUPABASE_CONFIG.url,
-  SUPABASE_CONFIG.anonKey
-);
+// Initialisation du client Supabase avec vérification
+var supabase = null;
+
+if (typeof window.supabase === 'undefined') {
+  console.error('ERREUR: La librairie Supabase n\'est pas chargée. Vérifiez que le script CDN est correct.');
+} else if (typeof window.supabase.createClient !== 'function') {
+  console.error('ERREUR: window.supabase.createClient n\'est pas une fonction');
+} else {
+  try {
+    supabase = window.supabase.createClient(
+      SUPABASE_CONFIG.url,
+      SUPABASE_CONFIG.anonKey
+    );
+    console.log('Supabase client initialisé avec succès');
+  } catch (error) {
+    console.error('ERREUR lors de l\'initialisation Supabase:', error);
+  }
+}
