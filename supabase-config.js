@@ -48,3 +48,14 @@ function getSupabaseClient() {
   
   return supabase;
 }
+
+// Initialisation au chargement du DOM
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM chargé, vérification Supabase...');
+    console.log('window.supabase:', typeof window.supabase !== 'undefined' ? window.supabase : 'undefined');
+  });
+} else {
+  console.log('DOM déjà chargé, vérification Supabase...');
+  console.log('window.supabase:', typeof window.supabase !== 'undefined' ? window.supabase : 'undefined');
+}
