@@ -6,12 +6,18 @@ const SUPABASE_CONFIG = {
 };
 
 // Lazy initialization - créer le client seulement quand on en a besoin
-var supabase = null;
+// IMPORTANT: ne PAS l'appeler "supabase", car "var supabase" au scope global
+// EST window.supabase (même propriété). Or window.supabase contient déjà
+// la librairie ({ createClient }) chargée via le script type="module" dans
+// admin.html. Si on réutilise ce nom, ce script et le nôtre s'écrasent
+// mutuellement et getSupabaseClient() finit par retourner la librairie au
+// lieu du client → d'où l'erreur "client.from is not a function".
+var supabaseClientInstance = null;
 
 function getSupabaseClient() {
-  console.log('getSupabaseClient appelé, supabase actuel:', supabase);
+  console.log('getSupabaseClient appelé, instance actuelle:', supabaseClientInstance);
   
-  if (supabase === null) {
+  if (supabaseClientInstance === null) {
     console.log('Création du client Supabase...');
     console.log('window.supabase existe?', typeof window.supabase !== 'undefined');
     
@@ -29,24 +35,24 @@ function getSupabaseClient() {
     }
     
     try {
-      supabase = window.supabase.createClient(
+      supabaseClientInstance = window.supabase.createClient(
         SUPABASE_CONFIG.url,
         SUPABASE_CONFIG.anonKey
       );
-      console.log('Supabase client créé avec succès:', supabase);
-      console.log('supabase.from existe?', typeof supabase.from === 'function');
+      console.log('Supabase client créé avec succès:', supabaseClientInstance);
+      console.log('supabaseClientInstance.from existe?', typeof supabaseClientInstance.from === 'function');
     } catch (error) {
       console.error('Erreur lors de la création du client:', error);
       throw error;
     }
   }
   
-  if (supabase === null) {
-    console.error('supabase est toujours null après création!');
+  if (supabaseClientInstance === null) {
+    console.error('Le client est toujours null après création!');
     throw new Error('Impossible de créer le client Supabase');
   }
   
-  return supabase;
+  return supabaseClientInstance;
 }
 
 // Initialisation au chargement du DOM
