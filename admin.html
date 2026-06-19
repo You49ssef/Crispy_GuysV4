@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — Crispy Guys!!</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js" onerror="console.error('Erreur chargement Supabase CDN')"></script>
-<script src="supabase-config.js"></script>
 <style>
 :root {
   --orange: #F7621E;
@@ -1391,5 +1389,10 @@ function showToast(msg) {
   setTimeout(function(){ t.style.display='none'; }, 3000);
 }
 </script>
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+  window.supabase = { createClient };
+</script>
+<script src="supabase-config.js"></script>
 </body>
 </html>
