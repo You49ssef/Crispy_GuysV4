@@ -5,34 +5,22 @@ const SUPABASE_CONFIG = {
   storageBucket: 'product-images'
 };
 
-// Initialisation du client Supabase avec vérification détaillée
+// Lazy initialization - créer le client seulement quand on en a besoin
 var supabase = null;
 
-console.log('Début initialisation Supabase...');
-console.log('window.supabase existe?', typeof window.supabase !== 'undefined');
-console.log('window.supabase:', window.supabase);
-
-if (typeof window.supabase === 'undefined') {
-  console.error('ERREUR: La librairie Supabase n\'est pas chargée. Vérifiez que le script CDN est correct.');
-  console.error('Vérifiez l\'onglet Network pour voir si le CDN charge correctement.');
-} else if (typeof window.supabase.createClient !== 'function') {
-  console.error('ERREUR: window.supabase.createClient n\'est pas une fonction');
-  console.error('window.supabase.createClient:', window.supabase.createClient);
-} else {
-  try {
-    console.log('Tentative de création du client Supabase...');
-    console.log('URL:', SUPABASE_CONFIG.url);
-    console.log('Anon key:', SUPABASE_CONFIG.anonKey.substring(0, 20) + '...');
-    
+function getSupabaseClient() {
+  if (supabase === null) {
+    if (typeof window.supabase === 'undefined') {
+      throw new Error('La librairie Supabase n\'est pas chargée');
+    }
+    if (typeof window.supabase.createClient !== 'function') {
+      throw new Error('window.supabase.createClient n\'est pas disponible');
+    }
     supabase = window.supabase.createClient(
       SUPABASE_CONFIG.url,
       SUPABASE_CONFIG.anonKey
     );
-    
-    console.log('Supabase client initialisé avec succès');
-    console.log('supabase.from existe?', typeof supabase.from === 'function');
-  } catch (error) {
-    console.error('ERREUR lors de l\'initialisation Supabase:', error);
-    console.error('Stack trace:', error.stack);
+    console.log('Supabase client créé');
   }
+  return supabase;
 }
