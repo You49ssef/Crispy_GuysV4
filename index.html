@@ -476,7 +476,8 @@ font-weight: 700; font-size: 1.3rem; cursor: pointer;
 
   async function loadMenuFromSupabase() {
     try {
-      const { data, error } = await supabase
+      const client = getSupabaseClient();
+      const { data, error } = await client
         .from('products')
         .select('*, categories(name)')
         .eq('active', true)
@@ -505,7 +506,8 @@ font-weight: 700; font-size: 1.3rem; cursor: pointer;
 
   async function loadCategoriesFromSupabase() {
     try {
-      const { data, error } = await supabase
+      const client = getSupabaseClient();
+      const { data, error } = await client
         .from('categories')
         .select('*')
         .order('name', { ascending: true });
@@ -528,7 +530,8 @@ font-weight: 700; font-size: 1.3rem; cursor: pointer;
 
   async function loadComplementsFromSupabase() {
     try {
-      const { data, error } = await supabase
+      const client = getSupabaseClient();
+      const { data, error } = await client
         .from('complements')
         .select('*')
         .order('name', { ascending: true });
